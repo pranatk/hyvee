@@ -6,7 +6,6 @@ export default function Home() {
   const [countryList, setCountryList] = useState([]);
   const [gender, setGender] = useState(null);
   const [age, setAge] = useState(null);
-  const [spinner, setSpinner] = useState(false);
   const [disabled, setDisabled] = useState(false);
   console.log("envv", process.env.NEXT_PUBLIC_API_KEY);
   const reset = () => {
@@ -26,10 +25,8 @@ export default function Home() {
       setNameError("Name should not contain digits");
       setDisabled(true);
     }
-    setSpinner(false);
   };
   const onSubmit = (e) => {
-    setSpinner(true);
     e.preventDefault();
     if (!name) {
       setNameError("Name is required");
@@ -105,8 +102,6 @@ export default function Home() {
       }
     });
     Promise.all([agePromise, genderPromise, nationPromise]).then((values) => {
-      setSpinner(false);
-
       setAge(values[0]?.age);
       setGender({
         gender: values[1].gender,
@@ -114,9 +109,6 @@ export default function Home() {
       });
       setCountryList(values[2]);
     });
-    // setGender({ gender: "Male", probability: 0.99 });
-    // setAge(27);
-    // setCountryList([{ code: "IN", name: "India", probability: 1 }]);
   };
   return (
     <div className={`flex text-white  w-screen `}>
@@ -152,7 +144,7 @@ export default function Home() {
         </form>
       </div>
       {age && gender && countryList?.length > 0 && (
-        <div className="w-1/2 text-[#151D29] pt-40 px-20">
+        <div className="w-1/2 text-[#151D29] py-40 px-20 overflow-y-auto h-screen ">
           <div className="font-semibold text-3xl mb-8">
             Name Analysis for {name[0].toUpperCase() + name.slice(1)}
           </div>
